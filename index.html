@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>IPTV Sync</title>
+    <!-- Google's Cast receiver library: the session with the sender and the messages. -->
+    <script src="https://www.gstatic.com/cast/sdk/libs/caf_receiver/v3/cast_receiver_framework.js"></script>
+    <style>
+      html, body { margin: 0; height: 100%; background: #000; overflow: hidden; font-family: system-ui, sans-serif; }
+      video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; background: #000; }
+      #line { position: absolute; left: 6%; right: 6%; bottom: 7%; text-align: center; pointer-events: none; }
+      #line span { display: inline-block; background: rgba(0, 0, 0, 0.6); color: #fff; font-size: 40px; font-weight: 600; line-height: 1.3; padding: 2px 18px; border-radius: 6px; white-space: pre-line; }
+      #title { position: absolute; left: 6%; top: 6%; color: #fff; font-size: 34px; font-weight: 600; text-shadow: 0 2px 8px #000; transition: opacity 0.6s; }
+      #title small { display: block; font-size: 24px; font-weight: 400; opacity: 0.8; }
+    </style>
+  </head>
+  <body>
+    <video playsinline></video>
+    <div id="title"></div>
+    <div id="line"></div>
+    <script src="main.js"></script>
+  </body>
+</html>
