@@ -29,7 +29,19 @@ self.onmessage = async ({ data: { id, input, args } }) => {
     ffmpeg.setLogger(({ message }) => log.length < 50 && log.push(message));
     ffmpeg.FS.writeFile('in.mkv', input);
     ffmpeg.setTimeout(-1);
-    ffmpeg.exec(...args);
+    // ffmpeg ends each run with exit(), which skips the clean-up of its own
+    // stack: 224 bytes stay taken per run, and after 121 runs (about 24
+    // minutes of film) every run fails with "memory access out of bounds"
+    // (Game of Thrones S02E01 in Chrome, 2026-10-23). So the stack is put back
+    // where it was after each run: 400 runs in a row, same output. stackSave
+    // and stackRestore are exported only under their short names, which are
+    // this version's own (Da, Ea): another version must be checked again.
+    const stack = version === '0.12.10' && typeof ffmpeg.asm?.Da === 'function' ? ffmpeg.asm.Da() : null;
+    try {
+      ffmpeg.exec(...args);
+    } finally {
+      if (stack !== null) ffmpeg.asm.Ea(stack);
+    }
     const code = ffmpeg.ret;
     ffmpeg.reset();
     ffmpeg.FS.unlink('in.mkv');
