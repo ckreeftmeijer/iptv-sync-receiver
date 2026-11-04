@@ -1,6 +1,6 @@
 // Converts pieces of a film in the browser, in a thread of its own so the page
 // stays smooth: ffmpeg compiled for the browser (ffmpeg.wasm). Used by
-// src/lib/play-file.web.ts, which sends one small MKV file at a time and gets
+// src/lib/play-file.web.ts, which sends one small MKV or MP4 file at a time and gets
 // back the same seconds as MPEG-TS that Chrome can play: the picture as it
 // is, the sound (often Dolby, which Chrome can't play) as AAC.
 //
@@ -22,12 +22,14 @@ function load() {
 
 let log = [];
 
-self.onmessage = async ({ data: { id, input, args } }) => {
+// `name`: what the piece is called, so ffmpeg reads it as that kind (an MKV
+// piece, or an MP4 piece from src/lib/mp4.ts).
+self.onmessage = async ({ data: { id, input, args, name = 'in.mkv' } }) => {
   try {
     const ffmpeg = await load();
     log = [];
     ffmpeg.setLogger(({ message }) => log.length < 50 && log.push(message));
-    ffmpeg.FS.writeFile('in.mkv', input);
+    ffmpeg.FS.writeFile(name, input);
     ffmpeg.setTimeout(-1);
     // ffmpeg ends each run with exit(), which skips the clean-up of its own
     // stack: 224 bytes stay taken per run, and after 121 runs (about 24
@@ -44,7 +46,7 @@ self.onmessage = async ({ data: { id, input, args } }) => {
     }
     const code = ffmpeg.ret;
     ffmpeg.reset();
-    ffmpeg.FS.unlink('in.mkv');
+    ffmpeg.FS.unlink(name);
     if (code !== 0) throw new Error(`ffmpeg stopped (${code}): ${log.slice(-5).join(' | ')}`);
     const output = ffmpeg.FS.readFile('out.ts');
     ffmpeg.FS.unlink('out.ts');
