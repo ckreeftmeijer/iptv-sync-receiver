@@ -4,11 +4,16 @@
 // back the same seconds as MPEG-TS that Chrome can play: the picture as it
 // is, the sound (often Dolby, which Chrome can't play) as AAC.
 //
-// ffmpeg itself (about 30 MB) comes from a CDN the first time and is kept by
-// the browser after that.
+// ffmpeg itself (about 30 MB) comes from our own storage the first time and is
+// kept by the browser after that (a year, unchanged per version). Since
+// 2026-11-04 not from jsDelivr, so no outside service sees who converts a film
+// (Christiaan: "a"; docs/APP_STORE_PATH.md item 18). The files are
+// @ffmpeg/core's from npm, the same bytes as jsDelivr served (sha-256
+// compared), in the R2 bucket iptvsync-demo-media under ffmpeg/<version>/;
+// a new version is uploaded there first (INSTRUCTIONS.md).
 const version = '0.12.10';
-const coreURL = `https://cdn.jsdelivr.net/npm/@ffmpeg/core@${version}/dist/umd/ffmpeg-core.js`;
-const wasmURL = `https://cdn.jsdelivr.net/npm/@ffmpeg/core@${version}/dist/umd/ffmpeg-core.wasm`;
+const coreURL = `https://media.iptvsync.app/ffmpeg/${version}/ffmpeg-core.js`;
+const wasmURL = `https://media.iptvsync.app/ffmpeg/${version}/ffmpeg-core.wasm`;
 
 let ready = null;
 function load() {
