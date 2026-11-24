@@ -42,6 +42,16 @@
       #episodes .bar { position: absolute; left: 0; right: 0; bottom: 0; height: 0.8rem; background: rgba(255, 255, 255, 0.25); }
       #episodes .bar i { display: block; height: 0.8rem; background: #9b89ff; }
       #episodes .t { font-size: 2.6rem; font-weight: 600; color: #f4f4f6; margin-top: 1.4rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+      /* The time bar (audit of 2026-11-23): the TV app's (src/components/scrubber.tsx, TvBar in src/app/player.tsx) at its size on a 1080p screen, shown while the remote jumps. */
+      #bar { position: absolute; left: 0; right: 0; bottom: 0; padding: 12rem 9.6rem 6.4rem; background: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.75)); }
+      #bar[hidden] { display: none; }
+      #bar .hit { position: relative; height: 6.4rem; display: flex; align-items: center; }
+      #bar .track { width: 100%; height: 1.2rem; border-radius: 0.6rem; background: rgba(255, 255, 255, 0.3); overflow: hidden; }
+      #bar .track i { display: block; height: 100%; background: #fff; }
+      #bar .knob { position: absolute; top: 1rem; width: 4.4rem; height: 4.4rem; margin-left: -2.2rem; border-radius: 50%; background: #fff; }
+      #bar .bubble { position: absolute; bottom: 6.8rem; transform: translateX(-50%); color: #fff; font-size: 2.6rem; font-weight: 500; font-variant-numeric: tabular-nums; background: rgba(0, 0, 0, 0.75); padding: 0.6rem 1.6rem; border-radius: 1.2rem; white-space: nowrap; }
+      #bar .bubble[hidden] { display: none; }
+      #bar .times { display: flex; justify-content: space-between; margin-top: 0.8rem; color: rgba(255, 255, 255, 0.85); font-size: 2.6rem; font-weight: 500; font-variant-numeric: tabular-nums; }
       @keyframes turn { to { transform: rotate(360deg); } }
       @keyframes breathe { 50% { opacity: 0.45; } }
       #next svg { width: 3.2rem; height: 3.2rem; flex: none; }
@@ -56,6 +66,7 @@
     <div id="wait" hidden><div class="track"></div><div class="button"></div><div class="arc"></div></div>
     <div id="slow" hidden></div>
     <div id="episodes" hidden><div class="seasons"></div><div class="row"></div></div>
+    <div id="bar" hidden><div class="hit"><div class="track"><i></i></div><b class="knob"></b><span class="bubble" hidden></span></div><div class="times"><span></span><span></span></div></div>
     <div id="next" hidden>
       <svg viewBox="0 0 512 512" fill="#0e0f13" aria-hidden="true"><path d="M80 116.67v278.66c0 18.35 21.33 29.81 37 19.93l209.9-139.32c14.14-9.39 14.14-30.47 0-39.86L117 96.74C101.33 86.86 80 98.32 80 116.67zM400 80h-32a16 16 0 0 0-16 16v320a16 16 0 0 0 16 16h32a16 16 0 0 0 16-16V96a16 16 0 0 0-16-16z"/></svg>
       <div><div class="t">Next episode</div><div class="n"></div></div>
